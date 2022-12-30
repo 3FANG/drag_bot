@@ -15,7 +15,7 @@ def create_connection(path: str):
         logger.error(ex)
     return connection
 
-connection = create_connection(os.path.join(f"{os.path.abspath(__file__)}\..",'database.db'))
+connection = create_connection(os.path.join(f"{os.path.dirname(__file__)}",'database.db'))
 
 create_query(connection,'''
     CREATE TABLE IF NOT EXISTS City(

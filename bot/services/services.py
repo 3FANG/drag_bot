@@ -98,7 +98,6 @@ def del_review(review: namedtuple):
 
 def check_user(id: int):
     answer = select_query(connection, f"SELECT EXISTS(SELECT id FROM User WHERE id = {id})")[0][0]
-    print(type(answer), answer)
     return answer
 
 def add_user(id: int, username: str):
