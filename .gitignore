@@ -141,4 +141,5 @@ cython_debug/
 .idea
 .vscode
 
-test*
+test*.py
+*/test
