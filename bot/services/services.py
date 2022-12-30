@@ -12,9 +12,9 @@ def get_cities():
 
 def get_goods(city: str=None):
     if city:
-        goods = [(good, price) for good, price in select_query(connection, f"SELECT name, price FROM Good JOIN Stock ON Good.id = Stock.good_id WHERE city_id = (SELECT id FROM City WHERE name = '{city}')")]
+        goods = [(id, good, price) for id, good, price in select_query(connection, f"SELECT Good.id, name, price FROM Good JOIN Stock ON Good.id = Stock.good_id WHERE city_id = (SELECT id FROM City WHERE name = '{city}')")]
     else:
-        goods = [(good, price) for good, price in select_query(connection, "SELECT name, price FROM Good")]
+        goods = [(id, good, price) for id, good, price in select_query(connection, "SELECT id, name, price FROM Good")]
     return goods
 
 def add_city(city: str, operator: str):
@@ -23,25 +23,25 @@ def add_city(city: str, operator: str):
 def add_good(name: str, price: str):
     insert_query(connection, 'INSERT INTO Good(name, price) VALUES (?,?)', (name, price))
 
-def add_good_in_city(city: str, good: str):
-    insert_query(connection, 'INSERT INTO Stock(city_id, good_id) VALUES ((SELECT id FROM City WHERE name = ?), (SELECT id FROM Good WHERE name = ?))', (city, good))
+def add_good_in_city(city: str, good_id: str):
+    insert_query(connection, 'INSERT INTO Stock(city_id, good_id) VALUES ((SELECT id FROM City WHERE name = ?), ?)', (city, good_id))
 
 def del_city(city: str):
     delete_query(connection, f"DELETE FROM City WHERE name = '{city}'")
 
-def del_good(name: str):
-    delete_query(connection, f"DELETE FROM Good WHERE name = '{name}'")
+def del_good(good_id: str):
+    delete_query(connection, f"DELETE FROM Good WHERE id = {good_id}")
 
-def del_good_from_city(city: str, name: str):
-    delete_query(connection, f"DELETE FROM Stock WHERE good_id = (SELECT id FROM Good WHERE name = '{name}') AND city_id = (SELECT id FROM City WHERE name = '{city}')")
+def del_good_from_city(city: str, good_id: int):
+    delete_query(connection, f"DELETE FROM Stock WHERE good_id = {good_id} AND city_id = (SELECT id FROM City WHERE name = '{city}')")
 
 def get_city_operator_link():
     operators = [(city, link) for city, link in select_query(connection, 'SELECT name, operator_link FROM City')]
     return operators
 
-def get_price(name: str):
-    price = select_query(connection, f"SELECT price FROM Good WHERE name = '{name}'")
-    return price[0][0]
+def get_price(good_id: int):
+    name, price = select_query(connection, f"SELECT name, price FROM Good WHERE id = {good_id}")[0]
+    return name, price
 
 def get_reviews():
     reviews = namedtuple('reviews', 'id date rating customer review')

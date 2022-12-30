@@ -30,20 +30,21 @@ async def create_cities_kb(editing=False, delete=False, separately=False, connec
 async def create_goods_kb(city: str=None, editing=False, delete=False, separately=False):
     kb: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=1)
     if editing:
-        for good, price in get_goods(city):
-            kb.add(InlineKeyboardButton(text=f"✏️ {good}", callback_data=f"ed_good:{good}"))
+        for id, good, price in get_goods(city):
+            kb.add(InlineKeyboardButton(text=f"✏️ {good}", callback_data=f"ed_good:{id}"))
         kb.add(InlineKeyboardButton(text='🚫 Отмена', callback_data='cancel'))
     elif delete:
         if separately:
-            for good, price in get_goods(city):
-                kb.add(InlineKeyboardButton(text=f"❌ {good}", callback_data=f"put_away_good:{good}"))
+            for id, good, price in get_goods(city):
+                # print(len(f"put_away_good:{good}".encode()), f"put_away_good:{id}")
+                kb.add(InlineKeyboardButton(text=f"❌ {good}", callback_data=f"put_away_good:{id}"))
         else:
-            for good, price in get_goods(city):
-                kb.add(InlineKeyboardButton(text=f"❌ {good}", callback_data=f"del_good:{good}"))
+            for id, good, price in get_goods(city):
+                kb.add(InlineKeyboardButton(text=f"❌ {good}", callback_data=f"del_good:{id}"))
         kb.add(InlineKeyboardButton(text='🚫 Отмена', callback_data='cancel'))
     else:
-        for good, price in get_goods(city):
-            kb.add(InlineKeyboardButton(text=f"{good}", callback_data=f"good:{good}"))
+        for id, good, price in get_goods(city):
+            kb.add(InlineKeyboardButton(text=f"{good}", callback_data=f"good:{id}"))
         kb.add(InlineKeyboardButton(text='Назад', callback_data='back'))
     return kb
 

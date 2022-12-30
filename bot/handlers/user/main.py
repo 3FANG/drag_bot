@@ -33,8 +33,8 @@ async def process_choice_good_button(callback: CallbackQuery, state: FSMContext)
 
 async def process_show_price_good(callback: CallbackQuery, state: FSMContext):
     await state.finish()
-    price = get_price(callback.data.lstrip('good:'))
-    await callback.message.edit_text(text=f"<b>{callback.data.lstrip('good:')}</b>\n<b>Цена: </b>\n\n{price}")
+    name, price = get_price(callback.data.lstrip('good:'))
+    await callback.message.edit_text(text=f"<b>{name}</b>\n<b>Цена: </b>\n\n{price}")
     await callback.answer()
 
 async def process_connect_operator_button(message: Message, state: FSMContext):
