@@ -14,7 +14,7 @@ async def start_command(message: Message, state: FSMContext):
     if not check_user(message.from_user.id):
         add_user(message.from_user.id, f"@{message.from_user.username}" if message.from_user.username else message.from_user.first_name)
     await state.finish()
-    await message.answer_photo(photo='AgACAgIAAxkBAAIYKGOs_QPSCDuI51RbEpwFAAFprVy7rgAC8sQxG4mEYUmJEKXRQ1yUugEAAwIAA3gAAywE', caption='<b>Приветствуем вас в нашем магазине!</b>', reply_markup=main_kb)
+    await message.answer_photo(photo='AgACAgIAAxkBAAMyY76B185GTePaszkSl29uLtjAuzMAAsvEMRuS3_hJmbCyr0LPR1UBAAMCAAN4AAMtBA', caption='<b>Приветствуем вас в нашем магазине!</b>', reply_markup=main_kb)
     '''AgACAgIAAxkBAAITZmOoEx_VXvr-el40-Tc1Whdi0Mx6AAJcwjEbYxlASfrEo_uWach1AQADAgADeAADLAQ'''
 
 async def process_cities_button(message: Message, state: FSMContext):
